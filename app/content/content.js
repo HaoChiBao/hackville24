@@ -98,4 +98,4 @@ window.addEventListener('mousedown', (e) => {
     }
 })
 
-startAnnotation()
+// startAnnotation()
