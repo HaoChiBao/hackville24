@@ -80,10 +80,10 @@ uploadStaticNote = async (rid, text = '', x, y) => {
             const notes = site.notes
 
             const user_notes = notes[userData.response.uid]
-
             // add note if user has no notes
-            if(!user_notes){ notes[userData.response.uid] = {}}
-
+            if(user_notes === undefined || user_notes === null){ notes[userData.response.uid] = []}
+            // console.log()
+            
             notes[userData.response.uid].push({
                 style: 0,
                 type: "text",

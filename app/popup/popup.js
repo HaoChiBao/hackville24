@@ -21,12 +21,12 @@ loginForm.addEventListener('submit', async (e) => {
     let password = document.getElementById('login-password').value
 
     // james test account
-    email =  "yangster@gmail.com"
-    password = "yangster123"
+    // email =  "yangster@gmail.com"
+    // password = "yangster123"
 
     // amanda test account
-    // email = "missy@gmail.com"
-    // password = "missy123"
+    email = "missy@gmail.com"
+    password = "missy123"
 
     try{
         const status = await system.signInWithEmailAndPassword(email, password)
