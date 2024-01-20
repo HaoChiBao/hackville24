@@ -2,6 +2,17 @@ const pages = ['login', 'register' ,'home']
 
 const system = new System()
 
+// sign out button
+const signOutButton = document.getElementById('sign-out')
+signOutButton.addEventListener('click', async () => {
+    try{
+        await system.signOut()
+        openPage('login')
+    } catch (e) {
+        console.log(e)
+    }
+})
+
 // login page
 const loginForm = document.getElementById('login-form')
 loginForm.addEventListener('submit', async (e) => {
@@ -71,9 +82,10 @@ const allGroups = document.querySelector('.all-groups')
 const showUserGroups = async () => {
     const userData = system.userData
 
-    if(userData.room === null) return
+    if(userData.room === null || userData.room === undefined) return
     
     const rooms = userData.room
+
     allGroups.innerHTML = ''
 
     const keys = Object.keys(rooms)

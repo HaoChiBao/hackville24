@@ -49,6 +49,7 @@ class System {
     #userData = {};
 
     constructor() {
+        chrome.storage.local.set({userCredentials: {}});
     }
 
     signInWithEmailAndPassword = async (email, password) => {
@@ -74,6 +75,10 @@ class System {
             const userCredentials = await response.json();
             
             this.#userCredentials = userCredentials;
+
+            // save the user data to local storage
+            await chrome.storage.local.set({userCredentials: this.#userCredentials});
+
             console.log("Credentials Retrieved")
 
             /*
@@ -145,6 +150,9 @@ class System {
     signOut = async () => {
         this.#userCredentials = {};
         this.#userData = {};
+
+        await chrome.storage.local.set({userCredentials: {}});
+
         console.log("User signed out");
     }
 

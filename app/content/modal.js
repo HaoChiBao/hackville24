@@ -152,7 +152,15 @@ class MouseWheel{
         return 0;
     }
 
-    triggerWheelEvent = (elementNum, x, y) => {
+    triggerWheelEvent = async (elementNum, x, y) => {
+        const data = await chrome.storage.local.get('userCredentials')
+        console.log(data)
+
+        if(data.userCredentials === undefined || Object.keys(data.userCredentials).length === 0) {
+            console.log('user not logged in')
+            return 0
+        }
+
         switch(elementNum) {
             case 0:
                 console.log('sticker')

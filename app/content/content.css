@@ -27,7 +27,7 @@
 .annotation .note-text{
     
     background-color: rgba(99, 99, 99, 0.303);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     
     border-radius: 0 0 10px 10px;
     border: none;
