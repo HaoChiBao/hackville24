@@ -25,19 +25,27 @@ class System {
         sites: {
             0: {
                 url: "https://www.google.com",
-                notes:[
-                    {
-                        type: "text",
-                        style: 0,
-                        user: "user1",
-                        note: "This is a note",
-                    },
-                    {
-                        type: "sticker",
-                        style: 0,
-                        user: "user2",
-                    }
-                ]
+                notes:{
+                    "rid0": [
+                        {
+                            type: "text",
+                            style: 0,
+                            note: "This is a note",
+                            x: 0,
+                            y: 0,
+                        },
+                    ],
+                        
+                    "rid1": [
+                        {
+                            type: "sticker",
+                            style: 0,
+                            x: 0,
+                            y: 0,
+                        },
+                    ]
+
+                }
             },
         },
     }
@@ -49,7 +57,18 @@ class System {
     #userData = {};
 
     constructor() {
-        chrome.storage.local.set({userCredentials: {}});
+        this.init();
+    }
+
+    init = async () => {
+        await chrome.storage.local.get('userCredentials').then( async (data) => {
+            if(data.userCredentials !== undefined || data.userCredentials !== null) {
+                this.#userCredentials = data.userCredentials;
+            } else {
+                this.#userCredentials = {};
+                await chrome.storage.local.set({userCredentials: {}});
+            }
+        })
     }
 
     signInWithEmailAndPassword = async (email, password) => {
@@ -346,13 +365,43 @@ class System {
         return status;
     }
 
+    updateRoom = async (rid, data) => {
+        // check if user is in this room
+        const userData = await this.#get(`/${this.#accountHeader}/${this.#userCredentials.localId}`)
+        const response = userData.response
+
+        if(!response) return
+        const rooms = response.room
+        const keys = Object.keys(rooms)
+
+        if(!keys.includes(rid)) return
+
+        console.log(data)
+
+        const path = `/${this.#roomHeader}/${rid}`
+
+        // overwrite the user data in the db with the local user data
+        const status = await this.#post(path, data)
+
+        return status;
+    }
+
     // testing purposes
     get userCredentials() {
         return this.#userCredentials;
     }
 
-    get userData() {
-        return this.#userData;
+    set userCredentials(userCredentials) {
+        this.#userCredentials = userCredentials;
+    }
+
+    roomData = async (rid) =>{
+        return await this.#get(`/${this.#roomHeader}/${rid}`)
+    }
+
+    userData = async () => {
+        return await this.#get(`/${this.#accountHeader}/${this.#userCredentials.localId}`)
+        // return this.#userData;
     }
 }
 

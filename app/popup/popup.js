@@ -80,11 +80,12 @@ createRoomForm.addEventListener('submit', async (e) => {
 // area to display all groups user is in
 const allGroups = document.querySelector('.all-groups')
 const showUserGroups = async () => {
-    const userData = system.userData
-
-    if(userData.room === null || userData.room === undefined) return
+    const userData = await system.userData()
+    const response = userData.response
     
-    const rooms = userData.room
+    if(response.room === null || response.room === undefined) return
+    
+    const rooms = response.room
 
     allGroups.innerHTML = ''
 
