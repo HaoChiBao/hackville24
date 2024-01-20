@@ -25,7 +25,7 @@ class MouseWheel{
     #state = {
         controlHold: false,
         activationHold: false,
-        activationKey: 'Control',
+        activationKeys: ['Control', 'Meta'],
     }
 
     // variable for the current active slice
@@ -63,16 +63,24 @@ class MouseWheel{
             // activation key
             window.addEventListener('keydown', (e) => {
                 const key = e.key
-                if(key === this.#state.activationKey) {
-                    this.#state.activationHold = true
+                for(let i = 0 ; i < this.#state.activationKeys.length; i++){
+                    const activate_key = this.#state.activationKeys[i]
+                    // console.log(activate_key)
+                    if(key === activate_key) {
+                        this.#state.activationHold = true
+                        // console.log(111)
+                    }
                 }
             })
             
             window.addEventListener('keyup', (e) => {
                 const key = e.key
-                if(key === this.#state.activationKey) {
-                    this.#state.activationHold = false
-                    this.deactivate()
+                for(let i = 0 ; i < this.#state.activationKeys.length; i++){
+                    const activate_key = this.#state.activationKeys[i]
+                    if(key === activate_key) {
+                        this.#state.activationHold = false
+                        this.deactivate()
+                    }
                 }
             })
         }
