@@ -1,10 +1,16 @@
 /* static elements */
+@font-face {font-family: 'GTWalsheimPro-Regular';src: url('https://cdn.shopify.com/s/files/1/0588/4228/4186/files/GTWalsheimPro-Regular.woff?v=1669253354') format('woff');} 
 
 .static-note{
     position: absolute;
     z-index: 9999;
 }
 
+.static-note{
+    padding: 0;
+    margin: 0;
+    font-family: 'GTWalsheimPro-Regular', sans-serif ;
+}
 
 /* annotation */
 .annotation{
@@ -13,31 +19,148 @@
 
     /* border: 2px solid black;   */
     border-radius: 10px; 
+    background-color: #E1D7CD;
 
-    overflow: hidden;
+    padding: 0.8rem;
+    
+    /* overflow: hidden; */
 }
 
 .annotation .bar{
     width: 100%;
     height: 2rem;
     
-    background-color: rgb(99, 99, 99);
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: row;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.annotation .bar .left{
+    height: 100%;
+    width: 100%;
+    
+    /* border-style: dotted; */
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* position: relative; */
+    position: absolute;
+}
+
+.annotation .bar .left h3{
+    text-overflow: ellipsis;
+}
+
+.annotation .bar .left img{
+    aspect-ratio: 1/1;
+    height: 60%;
+    object-fit: contain;
+    margin: 0.5rem;
+}
+
+.annotation .bar .right{
+    height: 100%;
+    width: 100%;
+
+    z-index: 9999;
+    /* border-style: dotted; */
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.annotation .bar .right button:hover img{
+    filter: invert(1);
+}
+
+.annotation .bar .right button {
+    aspect-ratio: 1.2/1;
+    height: 100%;
+
+    background-color: #E1D7CD;
+
+    border: none;
+    outline: none;
+    
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    
+    cursor: pointer;
+    
+    background-color: transparent;
+    
+    padding-left: 0.5rem;
+}
+.annotation .bar .right .close{
+    aspect-ratio: 1/1;
+}
+
+.annotation .bar .right button img{
+    width: 100%;
+    height: 100%; 
+    object-fit: contain;
 }
 
 .annotation .note-text{
     
-    background-color: rgba(99, 99, 99, 0.303);
+    background-color: rgb(255, 255, 255);
     backdrop-filter: blur(5px);
     
-    border-radius: 0 0 10px 10px;
+    border-radius: 10px;
     border: none;
     outline: none;
+
+    padding: 0.5rem;
+
+    width: 300px;
+    height: 150px;
+
+    font-size: 1.2rem;
 }
 
 .annotation .note-text:focus{
     border: none;
 }
 
+/* remove  */
+.annotation .note-text::-webkit-scrollbar {
+    /* width: 0; */
+    width: 18px;
+    /* width: 100px; */
+}
+
+/* Track */
+.annotation .note-text::-webkit-scrollbar-track {
+    background:transparent;
+}
+
+.annotation .note-text::-webkit-scrollbar-thumb {
+    background-color: black;
+
+    background-clip: content-box;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    /* background-image: url('https://assets.materialup.com/uploads/cde34f59-a45f-48d4-9699-3a686999b9dc/preview.gif'); */
+
+  /* Handle on hover */
+}
+.annotation .note-text::-webkit-scrollbar-thumb:hover {
+  /* background: #555; */
+  opacity: 0.8;
+}
+
+
+/* stickerrs */
 
 .sticker{
     width: 100px;
