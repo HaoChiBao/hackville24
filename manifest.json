@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "group thing",
+    "name": "hackville 24",
     "description": "learn together",
     "version": "0.6.9",
 
@@ -24,7 +24,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["./app/content/content.js"],
+            "js": ["./app/content/modal.js","./app/content/content.js", "./app/auth/system.js"],
             "css": ["./app/content/content.css"],
             "run_at": "document_start"
         }
