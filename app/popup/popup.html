@@ -123,8 +123,31 @@
 
         <button class = 'home-button'>home</button>
 
+        <h2>Create Group</h2>
+
         <form id = 'create-room'>
-            <input type="text" name="room" placeholder="group-id">
+
+            <div class="wrapper">
+                <h4>Name</h4>
+                <input type="text" name="room" placeholder="type name here" required>
+            </div>
+
+            <div class="wrapper">
+                <h4>Description</h4>
+                <textarea name="" id="" cols="30" rows="10" placeholder="type description here" required></textarea>
+            </div>
+
+            <div class="make-public">
+
+                <h4>Public</h4>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+
+            </div>
+
             <button type="submit">Create</button>
         </form>
 

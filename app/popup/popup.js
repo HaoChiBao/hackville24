@@ -356,12 +356,12 @@ const init_searchRoom = async () => {
     if(rooms === null || rooms === undefined) return
 
     const keys = Object.keys(rooms)
-    console.log(rooms, keys)
+    // console.log(rooms, keys)
+    const publicRoomsElement = document.querySelector('.public .groups')
+    publicRoomsElement.innerHTML = ''
     keys.forEach(rid => {
         const room = rooms[rid]
         if(room.public){
-            const publicRoomsElement = document.querySelector('.public .groups')
-            publicRoomsElement.innerHTML = ''
 
             console.log(publicRoomsElement)
 
@@ -400,4 +400,4 @@ turnOffPages = () => {
 openPage('login')
 // openPage('home')
 // openPage('searchRoom')
-openPage('create')
+// openPage('create')

@@ -228,7 +228,123 @@ section{
 
 /* create pageee */
 
+#create {
+    /* border-style: dotted; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+#create-room{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding:1rem;
+
+}
+
+#create-room h4{
+    margin: 0.5rem;
+}
+
+#create-room input{
+    width: 70%;
+    padding:0.5rem;
+}
+#create-room textarea{
+    width: 70%;
+    padding:0.5rem;
+}
+
+#create-room button{
+    width: 70%;
+    padding:0.5rem;
+}
+
+#create .make-public{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#create .wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#create .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+
+    transform: scale(0.8);
+  }
+  
+  /* Hide default HTML checkbox */
+  #create .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  #create .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  #create .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  #create input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  #create input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  #create input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  #create .slider.round {
+    border-radius: 34px;
+  }
+  
+  #create .slider.round:before {
+    border-radius: 50%;
+}
 
 
 /* remove  */
