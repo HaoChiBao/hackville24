@@ -37,6 +37,238 @@ section{
     /* border-style: dotted; */
 }
 
+
+/* landing -=-=-=- */
+#landing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+#landing .title{
+    width: 80%;
+}
+
+#landing .pfps{
+    position: absolute;
+    height: 3rem;
+}
+
+#landing #p0{
+    /* random top, left, and rotation */
+    top: 30%;
+    left: 10%;
+    transform: rotate(10deg);
+}
+
+#landing #p1{
+    /* random top, left, and rotation */
+    top: 10%;
+    left: 50%;
+    transform: rotate(-10deg);
+}
+
+#landing #p2{
+    /* random top, left, and rotation */
+    top: 40%;
+    left: 70%;
+    transform: rotate(10deg);
+}
+
+#landing #p3{
+    /* random top, left, and rotation */
+    top: 70%;
+    left: 20%;
+    transform: rotate(-10deg);
+}
+
+#landing #p4{
+    /* random top, left, and rotation */
+    top: 77%;
+    left: 65%;
+    transform: rotate(10deg);
+}
+
+#landing .buttons{
+    position: absolute;
+    bottom: 0;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#landing .buttons button{
+    width: 100px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: none;
+    outline: none;
+    
+    
+    border-radius: 1rem;
+
+    transition: 0.4s ease;
+    border: 2px solid #cccccc7d;
+}
+
+#landing .buttons #login-button{
+    background-color: #cccccc7d;
+}
+
+#landing .buttons #register-button{
+    background-color: transparent;
+}
+
+#landing .buttons button:hover{
+    transform: scale(1.1) translateY(-0.5rem);
+}
+
+#landing .buttons #login-button:hover{
+    background-color: #ccb9ff;
+    border: 2px solid #ccb9ff;
+}
+
+#landing .buttons #register-button:hover{
+    border: 2px solid #ccb9ff;
+}
+
+
+/* register -=-=-=-=-=- */
+
+#register{
+    /* border-style: dotted; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+#register h1{
+    position: absolute;
+    top: 1rem;
+
+    font-size: 2rem;
+}
+
+#register form{
+    width: 70%;
+    /* height: 60%; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding:1rem;
+
+    background-color: #cccccc7d;
+    border-radius: 1rem;
+}
+
+#register .wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+#register .wrapper h4{
+    margin: 0.5rem;
+    font-size: 1rem;
+}
+
+#register .wrapper input{
+    width: 80%;
+    padding:0.5rem;
+    border-radius: 1rem;
+}
+
+#register #register-submit{
+    margin-top: 1rem;
+    width: 90%;
+    padding:0.5rem;
+    border-radius: 1rem;
+
+    background-color: white;
+    border: 2px solid black;
+}
+
+#register #register-submit:hover{
+    background-color: black;
+    color: white;
+}
+
+
+#login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+#login h1{
+    position: absolute;
+    top: 1rem;
+
+    font-size: 2rem;
+}
+
+#login form{
+    width: 70%;
+    height: 60%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding:1rem;
+
+    background-color: #cccccc7d;
+    border-radius: 1rem;
+}
+
+#login .wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+#login .wrapper h4{
+    margin: 0.5rem;
+    font-size: 1.5rem;
+}
+
+#login .wrapper input{
+    width: 80%;
+    padding:0.5rem;
+    border-radius: 1rem;
+}
+
+#login #login-submit{
+    margin-top: 1rem;
+    width: 90%;
+    padding:0.5rem;
+    border-radius: 1rem;
+
+    background-color: white;
+    border: 2px solid black;
+}
+
+#login #login-submit:hover{
+    background-color: black;
+    color: white;
+}
+
+
 #findRooms{
     aspect-ratio: 1/1;
     width: 2rem;
@@ -104,10 +336,11 @@ section{
     justify-content: flex-start;
     align-items: center;
 
-    border-style: dotted;
     border-radius: 1rem;
 
     padding:1rem;
+
+    background-color: #cccccc7d;
 
 }
 
@@ -118,7 +351,7 @@ section{
     justify-content: center;
     align-items: center;
     
-    border-style: dotted;
+    border: 2px rgb(74, 74, 74) solid;
 
     padding: 0.5rem;
     border-radius: 1rem;
@@ -139,23 +372,22 @@ section{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    background-color: #cccccc7d;
+    border-radius: 1rem;
+
+    padding:0.5rem;
+
+    margin-bottom: 1rem;
 }
 
 .user-info h3{
-    margin: 0.5rem;
+    font-size: 1.5rem;
 }
 
 .user-info .pfp{
     aspect-ratio: 1/1;
-    height: 4rem;
-
-    padding: 1rem;
-    
-    overflow: hidden;
-    
-    background-color: rgb(132, 132, 132);
-    
-    border-radius: 50%;
+    height: 5rem;
 }
 
 .user-info .pfp img{

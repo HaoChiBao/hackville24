@@ -6,16 +6,63 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+    <section id = 'landing'>
+        <img class = 'title' src="../images/landing.png" alt="">
+
+        <img class = 'pfps' id = 'p0' src="../images/pfp/pfp (1).gif" alt="">
+        <img class = 'pfps' id = 'p1' src="../images/pfp/pfp (2).gif" alt="">
+        <img class = 'pfps' id = 'p2' src="../images/pfp/pfp (3).gif" alt="">
+        <img class = 'pfps' id = 'p3' src="../images/pfp/pfp (4).gif" alt="">
+        <img class = 'pfps' id = 'p4' src="../images/pfp/pfp (5).gif" alt="">
+
+        <div class="buttons">
+            <button id = 'login-button'>Login</button>
+            <button id = 'register-button'>Register</button>
+        </div>
+    </section>
 
     <section id = 'login'>
         <h1>Login</h1>
         <form id = 'login-form' >
-            <input type="text" name="username" placeholder="Username"  id = 'login-email'>
-            <input type="password" name="password" placeholder="Password"  id = 'login-password'>
-            <input type="submit" value="Login">
+            <div class="wrapper">
+                <h4>Email</h4>
+                <input type="text" name="username" placeholder="type email here"  id = 'login-email'>
+            </div>
+
+            <div class="wrapper">
+                <h4>Password</h4>
+                <input type="password" name="password" placeholder="type password here"  id = 'login-password'>
+                <!-- <input type="password" name="password" placeholder="Password"  id = 'login-password'> -->
+            </div>
+
+            <input id = 'login-submit' type="submit" value="Login">
         </form>
     </section>
-    <section id = 'register'>register</section>
+    <section id = 'register'>
+        <h1>Register</h1>
+        <form id = 'register-form'>
+
+            <div class="wrapper">
+                <h4>Username</h4>
+                <input type="text" name="username" placeholder="type username here" id = 'register-username'>
+            </div>
+            <div class="wrapper">
+                <h4>Email</h4>
+                <input type="text" name="email" placeholder="type email here" id = 'register-email'>
+            </div>
+            <div class="wrapper">
+                <h4>Password</h4>
+                <input type="password" name="password" placeholder="enter password" id = 'register-password'>
+            </div>
+
+            <div class="wrapper">
+                <h4>Confirm Password</h4>
+                <input type="password" name="password" placeholder="re-type password" id = 'register-confirm-password'>
+            </div>
+
+            <input id = "register-submit" type="submit" value="Register">
+        </form>
+    </section>
 
     <section id = 'home'>
         
@@ -83,27 +130,7 @@
             
             <div class="groups">
 
-                <div class="group">
-                    <div class="left">
-                        <h4>Group Name</h4>
-                        <p>Group Description</p>
-                    </div>
-                    <div class="right">
-                        <button class="activateRoom">add</button>
-                        <button class="leaveRoom">leave</button>
-                    </div>
-                </div>
-                
-                <div class="group">
-                    <div class="left">
-                        <h4>Groume</h4>
-                        <p>Group </p>
-                    </div>
-                    <div class="right">
-                        <button class="activateRoom">add</button>
-                        <button class="leaveRoom">leave</button>
-                    </div>
-                </div>
+                Search for public groups
 
             </div>
 
@@ -142,7 +169,7 @@
                 <h4>Public</h4>
 
                 <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" checked>
                     <span class="slider round"></span>
                 </label>
 

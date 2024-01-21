@@ -34,8 +34,7 @@ class System {
     static DEFAULT_USER_DATA = {
         name: "New User",
         pfp:{
-            style: 0,
-            colour: pastelColours[random(0, pastelColours.length - 1)],
+            style: random(1, 5),
         },
         uid: "",
 
@@ -47,6 +46,7 @@ class System {
         rid: "",
         users: {},
         public: true,
+        description: "This is a room",
         sites: {
             0: {
                 url: "https://www.google.com",
@@ -152,15 +152,16 @@ class System {
         return false
     };
 
-    #createUserDetails = async () => {
+    #createUserDetails = async (username) => {
         const uid = this.#userCredentials.localId;
         this.#userData = System.DEFAULT_USER_DATA;
+        if(username && username != '') this.#userData.name = username;
         this.#userData.uid = uid;
 
         await this.#post(`/${this.#accountHeader}/${uid}`, this.#userData)
     }
 
-    createNewAccount = async (email, password) => {
+    createNewAccount = async (email, password, username = '') => {
         try {
             const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.#firebaseConfig.apiKey}`, {
             // const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC_3AUmJ8rDAr0E95xq9K80PCbzgyuSlLo`, {
@@ -183,7 +184,7 @@ class System {
             const userCredentials = await response.json();
             this.#userCredentials = userCredentials;
             // console.log(this.#userCredentials)
-            this.#createUserDetails();
+            this.#createUserDetails(username);
             // console.log("Account created:", userData);
         }   
         catch (error) {
@@ -200,7 +201,7 @@ class System {
         console.log("User signed out");
     }
 
-    createRoom = async (rid = this.#generate_unique_rid(5)) => {
+    createRoom = async (rid = this.#generate_unique_rid(5), room_description = 'generic description', room_public = true) => {
         // generate a unique room id if one is not provided
 
         console.log("Creating room:", rid)
@@ -208,6 +209,8 @@ class System {
         // create a new room with the default room data
         const path = `/${this.#roomHeader}/${rid}`
         const roomData = System.DEFAULT_ROOM_DATA;
+        roomData.public = room_public;
+        roomData.description = room_description;
         roomData.rid = rid;
         const status = await this.#post(path, roomData)
 
@@ -224,7 +227,7 @@ class System {
         let roomReturn = {}
         try {
             // get the room data
-            const room = await this.#getRoom(rid);
+            const room = await this.getRoom(rid);
             const roomData = room.response;
             
             if(room.response === null || rid == "") throw new Error("Room does not exist");
@@ -267,7 +270,7 @@ class System {
             if(rooms.length <= 0) throw new Error("User is not in a room");
 
             // get the room data
-            const room = await this.#getRoom(rid);
+            const room = await this.getRoom(rid);
             const roomData = room.response;
 
             // remove the user from the room
@@ -290,7 +293,7 @@ class System {
         }
     }
 
-    #getRoom = async (id) => {
+    getRoom = async (id) => {
         const path = `/${this.#roomHeader}/${id}`
         const status = await this.#get(path)
 
@@ -414,6 +417,11 @@ class System {
     getAllRooms = async () => {
         const rooms = await this.#get(`/${this.#roomHeader}`)
         return rooms.response
+    }
+
+    getUserName = async () => {
+        const data = await this.#get(`/${this.#accountHeader}/${this.#userCredentials.localId}`)
+        return data.response.name
     }
 
     // testing purposes

@@ -45,12 +45,7 @@
     z-index: 50;
     
     aspect-ratio: 1/1;
-    width: 3rem;
-    
-    border-radius: 50%;
-    padding:0.5rem;
-    background-color: aquamarine;
-    /* border-style: dotted; */
+    width: 4rem;
 
     top:0;
     transform: translate(30%, -50%);
@@ -58,7 +53,7 @@
 
 .user img{
     width: 100%;
-    height: 50%;
+    height: 100%;
     object-fit: contain;
 }
 

@@ -140,7 +140,13 @@ createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp) => {
 
     let user = document.createElement('div')
     user.className = 'user'
-    user.style.backgroundColor = pfp.colour
+
+    let userImg = document.createElement('img')
+    userImg.className = 'pfp'
+    userImg.src = await chrome.runtime.getURL(`/app/images/pfp/pfp (${pfp.style}).gif`)
+    // user.style.backgroundColor = pfp.colour
+    user.appendChild(userImg)
+
     noteDiv.appendChild(user)
 
     let bar = document.createElement('div')

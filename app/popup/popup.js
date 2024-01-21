@@ -1,4 +1,4 @@
-const pages = ['login', 'register' ,'home', 'searchRoom', 'create']
+const pages = ['login', 'register' ,'home', 'searchRoom', 'create', 'landing']
 
 const system = new System()
 
@@ -13,6 +13,15 @@ signOutButton.addEventListener('click', async () => {
     }
 })
 
+
+// landing buttons
+const landing = document.getElementById('landing')
+const landingLogin = landing.querySelector('#login-button')
+const landingRegister = landing.querySelector('#register-button')
+
+landingLogin.addEventListener('click', () => {openPage('login')})
+landingRegister.addEventListener('click', () => {openPage('register')})
+
 // login page
 const loginForm = document.getElementById('login-form')
 loginForm.addEventListener('submit', async (e) => {
@@ -23,6 +32,9 @@ loginForm.addEventListener('submit', async (e) => {
     // james test account
     email =  "yangster@gmail.com"
     password = "yangster123"
+
+    email = "jamesyang663@gmail.com"
+    password = "leaping"
 
     // amanda test account
     // email = "missy@gmail.com"
@@ -62,14 +74,31 @@ joinRoomForm.addEventListener('submit', async (e) => {
     }
 })
 
+// register form
+const registerForm = document.getElementById('register-form')
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    let password = document.getElementById('register-password').value
+    let confirmPassword = document.getElementById('register-confirm-password').value
+    if(password !== confirmPassword) return
+
+    let email = document.getElementById('register-email').value
+    let username = document.getElementById('register-username').value
+
+    console.log(await system.createNewAccount(email, password, username))
+})
+
 // home create room
 const createRoomForm = document.getElementById('create-room')
 createRoomForm.addEventListener('submit', async (e) => {
     e.preventDefault()
     let room = createRoomForm.querySelector('input').value
     
+    let description = createRoomForm.querySelector('textarea').value
+    let public = createRoomForm.querySelector('input[type="checkbox"]').checked
+
     try{
-        const status = await system.createRoom(room)
+        const status = await system.createRoom(room, description, public)
         console.log(status)
         init_home()
         if (status) {
@@ -269,8 +298,9 @@ const createPublicGroup = (uid, description = 'public room') => {
         const data = await system.userData()
         const response = data.response
 
-        const activeRooms = response.room
-        activeRooms[uid] = 0
+        const rooms = response.room
+        if(rooms === null || rooms === undefined) {response.room = {}}
+        response.room[uid] = 0
         
         // console.log(response)
         // update userdata
@@ -301,7 +331,11 @@ const init_home = async () => {
     if(response.room === null || response.room === undefined) return
     
     const userPfp = document.querySelector('.user-info .pfp')
-    userPfp.style.backgroundColor = response.pfp.colour
+    const img = userPfp.querySelector('img')
+    img.src = await chrome.runtime.getURL(`/app/images/pfp/pfp (${response.pfp.style}).gif`)
+
+    const username = document.querySelector('.user-info .username')
+    username.textContent = response.name
 
     // add user rooms to screen
 
@@ -311,12 +345,15 @@ const init_home = async () => {
     activeGroups.innerHTML = ''
 
     const keys = Object.keys(rooms)
-    keys.forEach(room => {
-        const roomElement = createAllGroup(room)
+    keys.forEach(async room => {
+        const roomData = await system.getRoom(room)
+        const roomResponse = roomData.response
+
+        const roomElement = createAllGroup(room, roomResponse.description)
         allGroups.appendChild(roomElement)
 
         if(rooms[room] === 1){
-            const activeRoomElement = createActiveGroup(room)
+            const activeRoomElement = createActiveGroup(room, roomResponse.description)
             activeGroups.appendChild(activeRoomElement)
         }
     })
@@ -359,13 +396,14 @@ const init_searchRoom = async () => {
     // console.log(rooms, keys)
     const publicRoomsElement = document.querySelector('.public .groups')
     publicRoomsElement.innerHTML = ''
-    keys.forEach(rid => {
+    keys.forEach(async rid => {
         const room = rooms[rid]
         if(room.public){
+            const roomData = await system.getRoom(rid)
+            const roomResponse = roomData.response
+            // console.log(publicRoomsElement)
 
-            console.log(publicRoomsElement)
-
-            const roomElement = createPublicGroup(rid)
+            const roomElement = createPublicGroup(rid, roomResponse.description)
             publicRoomsElement.appendChild(roomElement)
         }
     })
@@ -398,6 +436,9 @@ turnOffPages = () => {
 }
 
 openPage('login')
+// openPage('register')
 // openPage('home')
 // openPage('searchRoom')
 // openPage('create')
+
+openPage('landing')
