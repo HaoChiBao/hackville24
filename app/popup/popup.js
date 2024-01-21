@@ -459,10 +459,21 @@ turnOffPages = () => {
     })
 }
 
-// openPage('login')
-// openPage('register')
-// openPage('home')
-// openPage('searchRoom')
-// openPage('create')
+const main = async () => {
+    let userCredentials = await chrome.storage.local.get(['userCredentials'])
+    console.log(userCredentials)
 
-openPage('landing')
+    if(userCredentials.userCredentials === undefined || userCredentials.userCredentials === null || Object.keys(userCredentials.userCredentials).length === 0) {
+        openPage('landing')
+    } else {
+        openPage('home')
+    }
+    // openPage('login')
+    // openPage('register')
+    // openPage('home')
+    // openPage('searchRoom')
+    // openPage('create')
+}
+
+main()
+

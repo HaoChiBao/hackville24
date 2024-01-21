@@ -89,11 +89,23 @@ class System {
         await chrome.storage.local.get('userCredentials').then( async (data) => {
             if(data.userCredentials !== undefined || data.userCredentials !== null) {
                 this.#userCredentials = data.userCredentials;
+                console.log("Credentials Retrieved")
+                console.log(this.#userCredentials)
+
+                const userData = await this.#get(`/${this.#accountHeader}/${this.#userCredentials.localId}`)
+                console.log("User Data Retrieved")
+                console.log(userData)
+                this.#userData = userData.response;
             } else {
+                console.log("No Credentials Found")
                 this.#userCredentials = {};
                 await chrome.storage.local.set({userCredentials: {}});
             }
         })
+    }
+
+    isSignedIn = () => {
+        return this.#userCredentials.idToken !== undefined;
     }
 
     signInWithEmailAndPassword = async (email, password) => {
@@ -450,49 +462,3 @@ class System {
         // return this.#userData;
     }
 }
-
-// const testAuth2 = {
-//     email: "test@test.com",
-//     password: "test123",
-// } 
-const testAuth1 = {
-    email: "yangster@gmail.com",
-    password: "yangster123",
-}
-const main = async () => {
-    
-    const system = new System();
-    // system.createRoom(test);
-    
-    await system.signInWithEmailAndPassword(testAuth1.email, testAuth1.password);
-    // await system.createNewAccount(testAuth1.email, testAuth1.password);
-    
-    // await system.signInWithEmailAndPassword(testAuth2.email, testAuth2.password);
-    // await system.createNewAccount(testAuth2.email, testAuth2.password);
-    
-    
-    // console.log(system.userCredentials);
-    // console.log(system.userData);
-    const rid = 'first-year-engineering'
-    // await system.leaveRoom(rid);
-    // await system.joinRoom("1703260032910_kcyRm");
-    await system.createRoom(rid);
-    // await system.createRoom();
-    // await system.createRoom();
-    // return
-    return
-    
-    // console.log(room)
-        
-        // return
-        // stress test
-    for(let i = 0; i < 100; i++) {
-        const resp = await system.createRoom(testRoom);
-        console.log(resp.ping)
-    }
-            
-    // createNewAccount(test.email, test.password);
-
-}
-
-// main();
