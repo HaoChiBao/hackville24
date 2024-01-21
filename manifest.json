@@ -10,10 +10,12 @@
         "storage"
     ],
     "host_permissions": ["<all_urls>"],
-    "web_accessible_resources":[{
-        "resources": ["/app/*"],
-        "matches": ["<all_urls>"]
-    }],
+    "web_accessible_resources":[
+        {
+            "resources": ["/app/*"],
+            "matches": ["<all_urls>"]
+        }
+    ],
     "icons": {
         "16": "./app/images/icon16.png"
     },

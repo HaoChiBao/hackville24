@@ -18,23 +18,107 @@
     <section id = 'register'>register</section>
 
     <section id = 'home'>
-        <h1>Home</h1>
-
-        <div class="all-groups">
-            hi
+        
+        <div class="user-info">
+            <div class="pfp">
+                <img src="../images/smile.png" alt="Avatar" class="avatar">
+            </div>
+            <h3 class = 'username'>USERNAME</h3>
         </div>
 
-        <form id = 'join-room'>
-            <input type="text" name="room" placeholder="group-id">
-            <button type="submit">Join</button>
-        </form>
+        <div class="active-groups">
+            <h3>Active Groups</h3>
+            <div class="groups">
+                activate a group
+                <!-- <div class="group">
+                    <div class="left">
+                        <h4>Groume</h4>
+                        <p>Group </p>
+                    </div>
+                    <div class="right">
+                        <button class="activateRoom">add</button>
+                        <button class="leaveRoom">leave</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
 
+        <div class="all-groups">
+            <h3>All Groups</h3>
+            <div class="groups">
+                add a group
+                <!-- <div class="group">
+                    <div class="left">
+                        <h4>Group Name</h4>
+                        <p>Group Description</p>
+                    </div>
+                    <div class="right">
+                        <button class="activateRoom">add</button>
+                        <button class="leaveRoom">leave</button>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+        
         <form id = 'create-room'>
             <input type="text" name="room" placeholder="group-id">
             <button type="submit">Create</button>
         </form>
 
         <button id = 'sign-out'>sign out</button>
+
+        <button id = 'findRooms'>+</button>
+        
+    </section>
+    
+    <section id = searchRoom>
+
+        <button class = 'home-button'>home</button>
+
+        <form id = 'search-public'>
+            <input type="text" placeholder="search groups">
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="public">
+            <h4>Join Public Group</h4>
+            
+            <div class="groups">
+
+                <div class="group">
+                    <div class="left">
+                        <h4>Group Name</h4>
+                        <p>Group Description</p>
+                    </div>
+                    <div class="right">
+                        <button class="activateRoom">add</button>
+                        <button class="leaveRoom">leave</button>
+                    </div>
+                </div>
+                
+                <div class="group">
+                    <div class="left">
+                        <h4>Groume</h4>
+                        <p>Group </p>
+                    </div>
+                    <div class="right">
+                        <button class="activateRoom">add</button>
+                        <button class="leaveRoom">leave</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="private">
+            <h4>Join Private Group</h4>
+            <form id = 'join-room'>
+                <input type="text" name="room" placeholder="group-code">
+                <button type="submit">Join</button>
+            </form>
+        </div>
 
     </section>
     

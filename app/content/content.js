@@ -1,6 +1,10 @@
+
 makeElementDraggable = (element, hold) => {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0
-    hold.onmousedown = dragMouseDown
+
+    hold.forEach(h => {
+        h.onmousedown = dragMouseDown
+    })
 
     function dragMouseDown(e) {
         e = e || window.event
@@ -117,23 +121,76 @@ uploadStaticNote = async (rid, text = '', x, y) => {
 }
 
 
-createAnnotation = async (x, y, editable = false, text = "", uid, pic, ) => {
+createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp) => {
     let noteDiv = createStaticNote()
-    noteDiv.id = uid + '0'
-    noteDiv.classList.add('annotation')
-    // noteDiv.style.left = x + 'px'
-    // noteDiv.style.top = y + 'px'
+    let noteDivId = uid + '0'
+    noteDiv.id = noteDivId
     noteDiv.style.left = x
     noteDiv.style.top = y 
 
+    let annotation = document.createElement('div')
+    annotation.className = 'annotation'
+    annotation.style.width = 'auto'
+    annotation.style.height = 'auto'
+
+    noteDiv.appendChild(annotation)
+
+    // noteDiv.style.left = x + 'px'
+    // noteDiv.style.top = y + 'px'
+
+    let user = document.createElement('div')
+    user.className = 'user'
+    user.style.backgroundColor = pfp.colour
+    noteDiv.appendChild(user)
+
     let bar = document.createElement('div')
     bar.className = 'bar'
-    noteDiv.appendChild(bar)
+
+    let left = document.createElement('div')
+    left.className = 'left'
+
+    let leftImg = document.createElement('img')
+    // leftImg.src = 'https://i.imgur.com/7bIhZ1f.png'
+    leftImg.className = 'callout'
+    leftImg.src = await chrome.runtime.getURL('/app/images/triangle.png')
+
+    let title = document.createElement('h3')
+    title.className = 'room-id'
+    title.innerHTML = rid
+
+    left.appendChild(leftImg)
+    left.appendChild(title)
+
+
+    let right = document.createElement('div')
+    right.className = 'right'
+
+    let minimize = document.createElement('button')
+    minimize.className = 'minimize'
+
+    let minimizeImg = document.createElement('img')
+    minimizeImg.src = await chrome.runtime.getURL('/app/images/rectangle.png')
+
+    minimize.appendChild(minimizeImg)
+    let close = document.createElement('button')
+    close.className = 'close'
+
+    let closeImg = document.createElement('img')
+    closeImg.src = await chrome.runtime.getURL('/app/images/ellipse.png')
+    close.appendChild(closeImg)
+
+    right.appendChild(minimize)
+    right.appendChild(close)
+
+    bar.appendChild(right)
+    bar.appendChild(left)
+    
+    annotation.appendChild(bar)
 
     let noteText = document.createElement('textarea')
     noteText.className = 'note-text'
-    noteText.style.width = '100%'
-    noteText.style.height = '100%'
+    noteText.style.width = '300px'
+    noteText.style.height = '150px'
     noteText.value = text
     noteText.placeholder = 'Type here'
     noteText.readOnly = !editable
@@ -173,10 +230,11 @@ createAnnotation = async (x, y, editable = false, text = "", uid, pic, ) => {
         for(let j = 0; j < sites.length; j++){
             const site = sites[j]
             if(site.url === url){
-                console.log(site)
+                // console.log(site)
                 const notes = site.notes
                 if(notes[uid] && notes[uid].length > 0){
                     noteDiv.id = uid + (notes[uid].length - 1)
+                    noteDivId = uid + (notes[uid].length - 1)
                 } else {
                     break;
                 }
@@ -186,7 +244,6 @@ createAnnotation = async (x, y, editable = false, text = "", uid, pic, ) => {
     
 
     if(editable){
-        console.log(0)
         noteText.addEventListener('keydown', (e) => {
             // console.log(e)
             const note = noteText.value
@@ -194,17 +251,64 @@ createAnnotation = async (x, y, editable = false, text = "", uid, pic, ) => {
             if(e.key === 'Enter'){
                 e.preventDefault()
 
-                const x = noteDiv.style.left
-                const y = noteDiv.style.top
+                const thisNoteDiv = noteText.parentElement.parentElement
 
-                uploadStaticNote('test', note, x, y)
+                const x = thisNoteDiv.style.left
+                const y = thisNoteDiv.style.top
+
+                const activeRoom = response.activeRoom
+
+                uploadStaticNote(activeRoom, note, x, y)
             }
         })
     }
 
+
+    closeTab = (element) => {
+        element.style.opacity = 0
+        element.style.pointerEvents = 'none'
+    }
+
+    openTab = (element) => {
+        element.style.opacity = 1
+        element.style.pointerEvents = 'all'
+    }
+
+    let click = true
+    let mousedown = false
+    user.addEventListener('mouseup', () => {
+        if(click){
+            const thisNoteDiv = user.parentElement.querySelector('.annotation')
+            openTab(thisNoteDiv)
+        }
+        mousedown = false
+        click = true
+    })
+
+    user.addEventListener('mousedown', () => {
+        mousedown = true
+    })
+
+    user.addEventListener('mousemove', (e) => {
+        if(mousedown){
+            click = false
+        }
+    })
+
+    minimize.addEventListener('click', () => {
+        const thisNoteDiv = minimize.parentElement.parentElement.parentElement
+        closeTab(thisNoteDiv)
+    })
+
+    close.addEventListener('click', () => {
+        // delete noteDiv
+        console.log(noteDiv)
+        noteDiv.remove()
+    })
+
     
-    makeElementDraggable(noteDiv, bar)
-    noteDiv.appendChild(noteText)
+    makeElementDraggable(noteDiv, [bar, user])
+    annotation.appendChild(noteText)
 
     return noteDiv
 }
@@ -226,7 +330,11 @@ startAnnotation = async (x = 0, y = 0) => {
 
     const uid = response.uid
 
-    const note = await createAnnotation(x + 'px', y + 'px', true, "", uid)
+    const pfp = response.pfp
+
+    const rid = response.activeRoom
+
+    const note = await createAnnotation(x + 'px', y + 'px', true, "", uid, rid, pfp)
 
     console.log(note)
     if(!note) return
@@ -273,6 +381,10 @@ init = async () => {
 
     for(let i = 0; i < roomKeys.length; i++){
         const room = roomKeys[i]
+        console.log(rooms[room]) 
+
+        // if the user's rooms is not active, skip
+        if(rooms[room] !== 1) continue
         
         const group = await system.roomData(room)
         const response = group.response
@@ -301,9 +413,12 @@ init = async () => {
                         const type = note.type
 
                         let noteDiv = null
+
+                        const thisUser = await system.getOtherUser(uid)
+                        const thisUserResponse = thisUser.response
                         switch(type){
                             case 'text':
-                                noteDiv = await createAnnotation(x, y, editable, text, uid)
+                                noteDiv = await createAnnotation(x, y, editable, text, uid, room, thisUserResponse.pfp)
                                 break;
                             case 'sticker':
                                 break;

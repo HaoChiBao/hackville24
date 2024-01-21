@@ -7,7 +7,25 @@ const firebaseConfig = {
     messagingSenderId: "786169359300",
     appId: "1:786169359300:web:5e358c8ccb80dac0b39291"
   };
-  
+
+const random = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// pastel colours array
+const pastelColours = [
+    "#FFB6C1", // light pink
+    "#FFA07A", // light salmon
+    "#FFDAB9", // peach puff
+    "#FFDEAD", // navajo white
+    "#FFE4B5", // moccasin
+    "#F0E68C", // khaki
+    "#E6E6FA", // lavender
+    "#D8BFD8", // thistle
+    "#DDA0DD", // plum
+    "#EE82EE", // violet
+    "#DA70D6", // orchid
+]
 
 class System {
     // load firebase config
@@ -15,7 +33,13 @@ class System {
 
     static DEFAULT_USER_DATA = {
         name: "New User",
+        pfp:{
+            style: 0,
+            colour: pastelColours[random(0, pastelColours.length - 1)],
+        },
         uid: "",
+
+        activeRoom: "test",
         room: {},
     }
     static DEFAULT_ROOM_DATA = {
@@ -225,7 +249,7 @@ class System {
             this.#userData.room[rid] = 0;
 
             // update the db user data with the new room id
-            await this.#updateUser();
+            await this.updateUser();
 
         } catch (error) {
             console.error("Room join error:", error.message);
@@ -259,7 +283,7 @@ class System {
             // update the user data with the new room id
             delete this.#userData.room[rid]
             // update the db user data with the new room id
-            await this.#updateUser();
+            await this.updateUser();
         } catch (error) {
             console.error("Room leave error:", error.message);
         }
@@ -356,7 +380,7 @@ class System {
     }
 
     // update the db user data with local user data
-    #updateUser = async () => {
+    updateUser = async () => {
         const path = `/${this.#accountHeader}/${this.#userData.uid}`
 
         // overwrite the user data in the db with the local user data
@@ -395,8 +419,16 @@ class System {
         this.#userCredentials = userCredentials;
     }
 
+    setUserData(userData) {
+        this.#userData = userData;
+    }
+
     roomData = async (rid) =>{
         return await this.#get(`/${this.#roomHeader}/${rid}`)
+    }
+
+    getOtherUser = async (user) => {
+        return await this.#get(`/${this.#accountHeader}/${user}`)
     }
 
     userData = async () => {
