@@ -110,10 +110,10 @@ class MouseWheel{
                     const wheelPoints = this.getRelativeMidPoint()
                     const mousePoints = {x: e.clientX, y: e.clientY}
                     const distance = MouseWheel.distanceBetweenTwoPoints(wheelPoints, mousePoints)
-
+                    const rect = this.mouseModal.getBoundingClientRect()
                     // console.log(wheelPoints)
                     if(this.isActive() && distance > this.#activationDistance && this.currentActiveSlice != null) {
-                        this.triggerWheelEvent(this.currentActiveSlice, wheelPoints.x, wheelPoints.y)
+                        this.triggerWheelEvent(this.currentActiveSlice, window.scrollX + rect.left, window.scrollY + rect.top)
                     }
 
                     this.deactivate()

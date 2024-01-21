@@ -112,7 +112,7 @@ createRoomForm.addEventListener('submit', async (e) => {
     }
 })
 
-const createAllGroup = (uid, description = 'generic text') => {
+const createAllGroup = async (uid, description = 'generic text') => {
     const groupDiv = document.createElement('div');
     groupDiv.classList.add('group');
 
@@ -139,7 +139,6 @@ const createAllGroup = (uid, description = 'generic text') => {
     // Create a button element with class 'activateRoom' and text 'add'
     const addButton = document.createElement('button');
     addButton.classList.add('activateRoom');
-    addButton.textContent = 'add';
     addButton.addEventListener('click', async () => {
         const data = await system.userData()
         const response = data.response
@@ -158,7 +157,6 @@ const createAllGroup = (uid, description = 'generic text') => {
     // Create a button element with class 'leaveRoom' and text 'leave'
     const leaveButton = document.createElement('button');
     leaveButton.classList.add('leaveRoom');
-    leaveButton.textContent = 'leave';
 
     leaveButton.addEventListener('click', async () => {
         // leave room
@@ -173,6 +171,15 @@ const createAllGroup = (uid, description = 'generic text') => {
         }
     })
 
+    const addImg = document.createElement('img')
+    addImg.src = await chrome.runtime.getURL('/app/images/ellipse.png')
+
+    const leaveImg = document.createElement('img')
+    leaveImg.src = await chrome.runtime.getURL('/app/images/close.png')
+
+    addButton.appendChild(addImg)
+    leaveButton.appendChild(leaveImg)
+
     // Append the buttons to the right div
     rightDiv.appendChild(addButton);
     rightDiv.appendChild(leaveButton);
@@ -185,7 +192,7 @@ const createAllGroup = (uid, description = 'generic text') => {
     return groupDiv;
 }
 
-const createActiveGroup = (uid, description = 'active room') => {
+const createActiveGroup = async (uid, description = 'active room') => {
     const groupDiv = document.createElement('div');
     groupDiv.classList.add('group');
 
@@ -212,7 +219,6 @@ const createActiveGroup = (uid, description = 'active room') => {
     // Create a button element with class 'activateRoom' and text 'add'
     const rmButton = document.createElement('button');
     rmButton.classList.add('deactivateRoom');
-    rmButton.textContent = 'rm';
     rmButton.addEventListener('click', async () => {
         const data = await system.userData()
         const response = data.response
@@ -235,7 +241,6 @@ const createActiveGroup = (uid, description = 'active room') => {
     // Create a button element with class 'leaveRoom' and text 'leave'
     const setEdit = document.createElement('button');
     setEdit.classList.add('setEdit');
-    setEdit.textContent = 'set';
 
     setEdit.addEventListener('click', async () => {
         // leave room
@@ -254,6 +259,15 @@ const createActiveGroup = (uid, description = 'active room') => {
         }
     })
 
+    const rmImg = document.createElement('img')
+    rmImg.src = await chrome.runtime.getURL('/app/images/minus.png')
+
+    const setImg = document.createElement('img')
+    setImg.src = await chrome.runtime.getURL('/app/images/star.png')
+
+    rmButton.appendChild(rmImg)
+    setEdit.appendChild(setImg)
+
     // Append the buttons to the right div
     rightDiv.appendChild(rmButton);
     rightDiv.appendChild(setEdit);
@@ -266,7 +280,7 @@ const createActiveGroup = (uid, description = 'active room') => {
     return groupDiv;
 }
 
-const createPublicGroup = (uid, description = 'public room') => {
+const createPublicGroup = async (uid, description = 'public room') => {
     const groupDiv = document.createElement('div');
     groupDiv.classList.add('group');
 
@@ -293,7 +307,7 @@ const createPublicGroup = (uid, description = 'public room') => {
     // Create a button element with class 'activateRoom' and text 'add'
     const joinPublic = document.createElement('button');
     joinPublic.classList.add('joinPublic');
-    joinPublic.textContent = 'join';
+    // joinPublic.textContent = 'join';
     joinPublic.addEventListener('click', async () => {
         const data = await system.userData()
         const response = data.response
@@ -309,6 +323,10 @@ const createPublicGroup = (uid, description = 'public room') => {
         console.log(await system.updateUser())
         init_home()
     })
+
+    joinImg = document.createElement('img')
+    joinImg.src = await chrome.runtime.getURL('/app/images/plus.png')
+    joinPublic.appendChild(joinImg)
 
     // Append the buttons to the right div
     rightDiv.appendChild(joinPublic);
@@ -328,32 +346,38 @@ const init_home = async () => {
     const userData = await system.userData()
     const response = userData.response
     
-    if(response.room === null || response.room === undefined) return
+    allGroups.innerHTML = ''
+    activeGroups.innerHTML = ''
+    // console.log(activeGroups)
     
     const userPfp = document.querySelector('.user-info .pfp')
     const img = userPfp.querySelector('img')
     img.src = await chrome.runtime.getURL(`/app/images/pfp/pfp (${response.pfp.style}).gif`)
-
+    
     const username = document.querySelector('.user-info .username')
     username.textContent = response.name
-
+    
     // add user rooms to screen
-
+    
+    if(response.room === null || response.room === undefined) return
     const rooms = response.room
 
-    allGroups.innerHTML = ''
-    activeGroups.innerHTML = ''
+    const activeRoom = response.activeRoom
 
     const keys = Object.keys(rooms)
     keys.forEach(async room => {
         const roomData = await system.getRoom(room)
         const roomResponse = roomData.response
 
-        const roomElement = createAllGroup(room, roomResponse.description)
+        const roomElement = await createAllGroup(room, roomResponse.description)
+        // console.log(roomElement)
         allGroups.appendChild(roomElement)
 
+
         if(rooms[room] === 1){
-            const activeRoomElement = createActiveGroup(room, roomResponse.description)
+            const activeRoomElement = await createActiveGroup(room, roomResponse.description)
+
+            if(activeRoom === room) activeRoomElement.style.filter = 'grayScale(0)'
             activeGroups.appendChild(activeRoomElement)
         }
     })
@@ -403,7 +427,7 @@ const init_searchRoom = async () => {
             const roomResponse = roomData.response
             // console.log(publicRoomsElement)
 
-            const roomElement = createPublicGroup(rid, roomResponse.description)
+            const roomElement = await createPublicGroup(rid, roomResponse.description)
             publicRoomsElement.appendChild(roomElement)
         }
     })
@@ -435,7 +459,7 @@ turnOffPages = () => {
     })
 }
 
-openPage('login')
+// openPage('login')
 // openPage('register')
 // openPage('home')
 // openPage('searchRoom')

@@ -121,22 +121,28 @@ uploadStaticNote = async (rid, text = '', x, y) => {
 }
 
 
-createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp) => {
+createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp, collapsed = true) => {
     let noteDiv = createStaticNote()
     let noteDivId = uid + '0'
     noteDiv.id = noteDivId
     noteDiv.style.left = x
     noteDiv.style.top = y 
-
+    
     let annotation = document.createElement('div')
     annotation.className = 'annotation'
     annotation.style.width = 'auto'
     annotation.style.height = 'auto'
-
+    if(collapsed){
+        annotation.style.opacity = 0
+        annotation.style.pointerEvents = 'none'
+    }
+    
     noteDiv.appendChild(annotation)
 
-    // noteDiv.style.left = x + 'px'
-    // noteDiv.style.top = y + 'px'
+    console.log(x, y)
+
+    noteDiv.style.left = x + 'px'
+    noteDiv.style.top = y + 'px'
 
     let user = document.createElement('div')
     user.className = 'user'
@@ -259,9 +265,15 @@ createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp) => {
 
                 const thisNoteDiv = noteText.parentElement.parentElement
 
-                const x = thisNoteDiv.style.left
-                const y = thisNoteDiv.style.top
+                // get x and y relative to page
+                // get bounding rect of noteDiv
+                const rect = thisNoteDiv.getBoundingClientRect()
+                const x = rect.left + window.scrollX
+                const y = rect.top + window.scrollY
 
+                // console.log(x, y, rect)
+                // return
+                
                 const activeRoom = response.activeRoom
 
                 uploadStaticNote(activeRoom, note, x, y)
@@ -315,7 +327,6 @@ createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp) => {
     
     makeElementDraggable(noteDiv, [bar, user])
     annotation.appendChild(noteText)
-
     return noteDiv
 }
 
@@ -340,7 +351,7 @@ startAnnotation = async (x = 0, y = 0) => {
 
     const rid = response.activeRoom
 
-    const note = await createAnnotation(x + 'px', y + 'px', true, "", uid, rid, pfp)
+    const note = await createAnnotation(x + 'px', y + 'px', true, "", uid, rid, pfp, false)
 
     console.log(note)
     if(!note) return
