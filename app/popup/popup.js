@@ -464,6 +464,7 @@ const main = async () => {
     console.log(userCredentials)
 
     if(userCredentials.userCredentials === undefined || userCredentials.userCredentials === null || Object.keys(userCredentials.userCredentials).length === 0) {
+        system.userCredentials = userCredentials.userCredentials
         openPage('landing')
     } else {
         openPage('home')
