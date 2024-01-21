@@ -516,6 +516,7 @@ init = async () => {
                 current_user_note.forEach(uid => {
                     const user_note = notes[uid]
 
+                    console.log(user_note)
                     if(!user_note) return
 
                     user_note.forEach(async note => {
@@ -529,6 +530,8 @@ init = async () => {
 
                         const thisUser = await system.getOtherUser(uid)
                         const thisUserResponse = thisUser.response
+
+                        console.log(type, "_________________________________")
                         switch(type){
                             case 'text':
                                 noteDiv = await createAnnotation(x, y, editable, text, uid, room, thisUserResponse.pfp)

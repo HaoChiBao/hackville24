@@ -195,13 +195,18 @@ class System {
       
             const userCredentials = await response.json();
             this.#userCredentials = userCredentials;
+
+            await chrome.storage.local.set({userCredentials: this.#userCredentials});
             // console.log(this.#userCredentials)
             this.#createUserDetails(username);
             // console.log("Account created:", userData);
+            return true
         }   
         catch (error) {
             console.error("Account creation error:", error.message);
+            return false
         }
+        return false
     };
 
     signOut = async () => {

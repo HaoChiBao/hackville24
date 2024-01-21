@@ -30,11 +30,11 @@ loginForm.addEventListener('submit', async (e) => {
     let password = document.getElementById('login-password').value
 
     // james test account
-    email =  "yangster@gmail.com"
-    password = "yangster123"
+    // email =  "yangster@gmail.com"
+    // password = "yangster123"
 
-    email = "jamesyang663@gmail.com"
-    password = "leaping"
+    // email = "jamesyang663@gmail.com"
+    // password = "leaping"
 
     // amanda test account
     // email = "missy@gmail.com"
@@ -85,7 +85,13 @@ registerForm.addEventListener('submit', async (e) => {
     let email = document.getElementById('register-email').value
     let username = document.getElementById('register-username').value
 
-    console.log(await system.createNewAccount(email, password, username))
+    const status = await system.createNewAccount(email, password, username)
+    console.log(status)
+    if(status){
+        openPage('home')
+    } else {
+        alert('Register failed')
+    }
 })
 
 // home create room
