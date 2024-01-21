@@ -7,7 +7,7 @@ const signOutButton = document.getElementById('sign-out')
 signOutButton.addEventListener('click', async () => {
     try{
         await system.signOut()
-        openPage('login')
+        openPage('landing')
     } catch (e) {
         console.log(e)
     }

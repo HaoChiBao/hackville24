@@ -270,9 +270,6 @@ section{
 
 
 #findRooms{
-    aspect-ratio: 1/1;
-    width: 2rem;
-    position: absolute;
     top: 1rem;
     right: 1rem;
 }
@@ -283,11 +280,34 @@ section{
     left: 1rem;
 }
 
-#sign-out{
+.floating-button{
     position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    aspect-ratio: 1/1;
+    width: 1.5rem;
+
+    border:none;
+    outline: none;
+    background-color: white;
+}
+
+.floating-button img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.floating-button:hover{
+    transform: scale(1.1);
+}
+
+#sign-out{
     top: 1rem;
     left: 1rem;
 }
+
 
 #create-page{
     position: absolute;
