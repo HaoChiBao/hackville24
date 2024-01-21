@@ -1,4 +1,4 @@
-const pages = ['login', 'register' ,'home', 'searchRoom']
+const pages = ['login', 'register' ,'home', 'searchRoom', 'create']
 
 const system = new System()
 
@@ -237,6 +237,60 @@ const createActiveGroup = (uid, description = 'active room') => {
     return groupDiv;
 }
 
+const createPublicGroup = (uid, description = 'public room') => {
+    const groupDiv = document.createElement('div');
+    groupDiv.classList.add('group');
+
+    // Create the left side of the group
+    const leftDiv = document.createElement('div');
+    leftDiv.classList.add('left');
+
+    // Create an h4 element with text 'Group Name'
+    const groupNameHeading = document.createElement('h4');
+    groupNameHeading.textContent = uid;
+
+    // Create a p element with text 'Group Description'
+    const groupDescriptionParagraph = document.createElement('p');
+    groupDescriptionParagraph.textContent = description;
+
+    // Append the h4 and p elements to the left div
+    leftDiv.appendChild(groupNameHeading);
+    leftDiv.appendChild(groupDescriptionParagraph);
+
+    // Create the right side of the group
+    const rightDiv = document.createElement('div');
+    rightDiv.classList.add('right');
+
+    // Create a button element with class 'activateRoom' and text 'add'
+    const joinPublic = document.createElement('button');
+    joinPublic.classList.add('joinPublic');
+    joinPublic.textContent = 'join';
+    joinPublic.addEventListener('click', async () => {
+        const data = await system.userData()
+        const response = data.response
+
+        const activeRooms = response.room
+        activeRooms[uid] = 0
+        
+        // console.log(response)
+        // update userdata
+        system.setUserData(response)
+
+        console.log(await system.updateUser())
+        init_home()
+    })
+
+    // Append the buttons to the right div
+    rightDiv.appendChild(joinPublic);
+
+    // Append the left and right divs to the group div
+    groupDiv.appendChild(leftDiv);
+    groupDiv.appendChild(rightDiv);
+
+    // Append the group div to the body (or any other parent element)
+    return groupDiv;
+}
+
 // area to display all groups user is in
 const allGroups = document.querySelector('.all-groups .groups')
 const activeGroups = document.querySelector('.active-groups .groups')
@@ -284,13 +338,39 @@ findRooms.addEventListener('click', async () => {
     openPage('searchRoom')
 })
 
+const directToCreate = document.getElementById('create-page')
+directToCreate.addEventListener('click', async () => {
+    openPage('create')
+})
+
 const homeButtons = document.querySelectorAll('.home-button')
 homeButtons.forEach(button => {
     button.addEventListener('click', () => {
         openPage('home')
-        init_home()
     })
 })
+
+const init_searchRoom = async () => {
+    const rooms = await system.getAllRooms()
+
+    if(rooms === null || rooms === undefined) return
+
+    const keys = Object.keys(rooms)
+    console.log(rooms, keys)
+    keys.forEach(rid => {
+        const room = rooms[rid]
+        if(room.public){
+            const publicRoomsElement = document.querySelector('.public .groups')
+            publicRoomsElement.innerHTML = ''
+
+            console.log(publicRoomsElement)
+
+            const roomElement = createPublicGroup(rid)
+            publicRoomsElement.appendChild(roomElement)
+        }
+    })
+    return 
+} 
 
 // on start
 const openPage = (page) => {
@@ -298,6 +378,10 @@ const openPage = (page) => {
 
     if(page === 'home'){
         init_home()
+    }
+
+    if(page == 'searchRoom'){
+        init_searchRoom()
     }
 
     const element = document.getElementById(page)
@@ -316,3 +400,4 @@ turnOffPages = () => {
 openPage('login')
 // openPage('home')
 // openPage('searchRoom')
+openPage('create')

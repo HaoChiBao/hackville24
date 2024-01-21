@@ -57,9 +57,15 @@ section{
     left: 1rem;
 }
 
+#create-page{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
 /* home page */
 #home{
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 #home .active-groups{
@@ -164,7 +170,7 @@ section{
 /* search room page */
 
 #searchRoom{
-    border-style: dotted;
+    /* border-style: dotted; */
 }
 
 #searchRoom #search-public{
@@ -219,6 +225,10 @@ section{
 .public .groups{
     height:100%;
 }
+
+/* create pageee */
+
+
 
 
 /* remove  */

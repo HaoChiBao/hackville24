@@ -46,6 +46,7 @@ class System {
         name: "New Room",
         rid: "",
         users: {},
+        public: true,
         sites: {
             0: {
                 url: "https://www.google.com",
@@ -408,6 +409,11 @@ class System {
         const status = await this.#post(path, data)
 
         return status;
+    }
+
+    getAllRooms = async () => {
+        const rooms = await this.#get(`/${this.#roomHeader}`)
+        return rooms.response
     }
 
     // testing purposes
