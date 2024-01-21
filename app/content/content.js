@@ -220,6 +220,9 @@ createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp, coll
     let userImg = document.createElement('img')
     userImg.className = 'pfp'
     userImg.src = await chrome.runtime.getURL(`/app/images/pfp/pfp (${pfp.style}).gif`)
+    userImg.title = uid
+
+    // userImg.title = 
     // user.style.backgroundColor = pfp.colour
     user.appendChild(userImg)
 
