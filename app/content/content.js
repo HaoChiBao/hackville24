@@ -48,6 +48,76 @@ createStaticNote = () => {
     return noteDiv
 }
 
+uploadSticker = async (x, y, style) => {
+    const url = window.location.href
+
+    // check if user is in a room
+    // get userCredentials
+    const data = await chrome.storage.local.get('userCredentials')
+    const userCredentials = data.userCredentials
+
+    if(!userCredentials || Object.keys(userCredentials).length === 0) return
+
+    // check if user is in this room
+    const system = new System()
+    system.userCredentials = userCredentials
+
+    const userData = await system.userData()
+    const userResponse = userData.response
+    const activeRoom = userResponse.activeRoom
+
+    const room = await system.roomData(activeRoom)
+    const response = room.response
+
+    if(!response) return
+
+    const sites = response.sites
+    // console.log(sites)
+
+    let found = false
+    for(let i = 0; i < sites.length; i++){
+        const site = sites[i]
+        if(site.url === url){
+            console.log('updating existing site')
+            console.log(site)
+
+            const notes = site.notes
+
+            const user_notes = notes[userData.response.uid]
+            // add note if user has no notes
+            if(user_notes === undefined || user_notes === null){ notes[userData.response.uid] = []}
+            // console.log()
+            
+            notes[userData.response.uid].push({
+                style: style,
+                type: "sticker",
+                x: x,
+                y: y,
+            })
+
+            found = true
+
+            break;
+        } 
+    }
+    if(!found){
+        console.log('creating new site')
+        sites.push({
+            url: url,
+            notes: {
+                [userData.response.uid]: [{
+                    style: style,
+                    type: "sticker",
+                    x: x,
+                    y: y,
+                }]
+            }
+        })
+    }
+    // console.log(room)
+    await system.updateRoom(activeRoom, room.response)
+}
+
 uploadStaticNote = async (rid, text = '', x, y) => {
     console.log(rid, text, x, y)
     if(text === '' || text === ' ') return
@@ -330,6 +400,31 @@ createAnnotation = async (x, y, editable = false, text = "", uid, rid, pfp, coll
     return noteDiv
 }
 
+createSticker = async (x, y, style) => {
+    const sticker = document.createElement('div')
+    sticker.className = 'sticker'
+    const stickerImg = document.createElement('img')
+    stickerImg.className = 'sticker-img'
+    stickerImg.src = await chrome.runtime.getURL(`/app/images/stickers/sticker (${style}).png`)
+    
+    sticker.appendChild(stickerImg)
+    
+    sticker.style.left = x + 'px'
+    sticker.style.top = y + 'px'
+    
+    makeElementDraggable(sticker, [stickerImg])
+    
+    return sticker
+}
+
+startSticker = async (x = 0, y = 0, style) => {
+    const sticker = await createSticker(x, y, style)
+
+    document.body.appendChild(sticker)
+
+    await uploadSticker(x, y, style)
+}
+
 startAnnotation = async (x = 0, y = 0) => {
     console.log(x, y)
     const data = await chrome.storage.local.get('userCredentials')
@@ -386,6 +481,7 @@ init = async () => {
 
     const userData = await system.userData()
     const response = userData.response
+    const activeRoom = response.activeRoom
 
     if(!response) return
     
@@ -438,6 +534,7 @@ init = async () => {
                                 noteDiv = await createAnnotation(x, y, editable, text, uid, room, thisUserResponse.pfp)
                                 break;
                             case 'sticker':
+                                noteDiv = await createSticker(x, y, note.style)
                                 break;
                             default:
                                 break;

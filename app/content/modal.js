@@ -111,9 +111,10 @@ class MouseWheel{
                     const mousePoints = {x: e.clientX, y: e.clientY}
                     const distance = MouseWheel.distanceBetweenTwoPoints(wheelPoints, mousePoints)
                     const rect = this.mouseModal.getBoundingClientRect()
-                    // console.log(wheelPoints)
+                    console.log(wheelPoints.x, wheelPoints.y)
+                    console.log(rect.left, rect.top)
                     if(this.isActive() && distance > this.#activationDistance && this.currentActiveSlice != null) {
-                        this.triggerWheelEvent(this.currentActiveSlice, window.scrollX + rect.left, window.scrollY + rect.top)
+                        this.triggerWheelEvent(this.currentActiveSlice, window.scrollX + wheelPoints.x, window.scrollY + wheelPoints.y)
                     }
 
                     this.deactivate()
@@ -171,14 +172,16 @@ class MouseWheel{
 
         switch(elementNum) {
             case 0:
-                console.log('sticker')
-                break;
-            case 1:
                 console.log('annotation')
                 startAnnotation(x, y)
                 break;
+            case 1:
+                console.log('sticker1')
+                startSticker(x, y, 1)
+                break;
             case 2:
-                console.log('random')
+                console.log('sticker2')
+                startSticker(x, y, 2)
                 break;
             default:
                 console.log('element:', elementNum, 'not found')
@@ -502,7 +505,7 @@ class MouseWheel{
 
 
 window.onload = () => {
-    const test_slices = 2
+    const test_slices = 3
     
     const mouseWheel = new MouseWheel(test_slices)
     // console.log(mouseWheel)
